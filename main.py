@@ -2,7 +2,7 @@ import pygame, sys, random
 
 pygame.init()
 
-WIDTH, HEIGHT = 633, 900
+WIDTH, HEIGHT = 400, 600
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Pyrdle")
 FPS = 30
@@ -75,15 +75,29 @@ def main():
                             usedWords.append(currWord)
                             currWord = ""
                             currLetter = 0
+                            guesses += 1
                         else:
                             invalidFlag = True
                 else:
-                    if len(curr_word) < LETTER_LENGTH:
+                    if len(currWord) < LETTER_LENGTH:
                         if event.unicode.isalpha():
-                            curr_word += event.unicode.upper()
-                            curr_letter += 1
+                            currWord += event.unicode.upper()
+                            currLetter += 1
+                print(currWord)
 
         SCREEN.fill(BG)
+
+        for y in range(NUM_ROWS):
+            row_rects = []
+            for x in range(NUM_COLUMNS):
+                x_pos = BASE_OFFSET_X + (x * DX) + (x * LETTER_BOX_WIDTH)
+                y_pos = BASE_OFFSET_Y + (y * DY) + (y * LETTER_BOX_HEIGHT)
+                curr_rect = pygame.Rect(
+                    (x_pos, y_pos), (LETTER_BOX_WIDTH, LETTER_BOX_HEIGHT)
+                )
+                pygame.draw.rect(SCREEN, WHITE_TEXT, curr_rect, 2)
+                row_rects.append((x_pos, y_pos))
+            rects.append(row_rects)
         pygame.display.update()
 
 
